@@ -8,6 +8,7 @@
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
 - Use `sal cc Configure-Component`, to make it even easier!
+  - Then you can configure components like `cc java` or `cc python,ruby @{python=3}`
 - *__Note__: If you've never run PowerShell Scripts before refer to __Setup PowerShell Section__ Below*
 
 ## Features
@@ -38,7 +39,7 @@ Name        | Type       | Preferences/Arguments | Alias
 `R`         | Language   | `NA`                  | `NA`
 `Ruby`      | Language   | `NA`                  | `rb`
 `MongoDB`   | Tech Stack | `NA`                  | `Mongo`
-
+>
 #### Custom Components:
 Name              | Type                | Description | Preferences/Arguments
 ----------------- | ------------------- | ----------- | -----
