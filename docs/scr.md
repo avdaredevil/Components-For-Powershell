@@ -1,4 +1,4 @@
-[Click here](../readme.md) to go back.
+_[Click here](../README.md) to go back._
 
 ## Screenshots for **Components-For-Powershell**
 ### Sample output:
