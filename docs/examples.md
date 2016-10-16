@@ -1,4 +1,4 @@
-[Click here](../readme.md) to go back.
+[Click here](../README.md) to go back.
 
 ## Examples for **Components-For-Powershell**
 ### Simple single attach:
