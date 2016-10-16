@@ -1,8 +1,8 @@
 [Click here](../readme.md) to go back.
 
 ## Examples for **Components-For-Powershell**
->
 ### Simple single attach:
+>
 ```powershell
 PS> cc py
 [+] Configured Python[2.7] for AP-PShell Management Console!
@@ -12,7 +12,9 @@ PS> cc py 3
 [+] Configured Python[3.5] for AP-PShell Management Console!
 ```
 _**Note**: The tool will remap your **path**, so that 2.7 entries will be removed before 3.5 entries are added_
+
 ### Multi Attach:
+>
 ```powershell
 PS> cc c,r,bower
 [+] Configured C for AP-PShell Management Console!
