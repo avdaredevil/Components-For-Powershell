@@ -41,7 +41,7 @@ Name        | Type       | Preferences/Arguments | Alias
 `MongoDB`   | Tech Stack | `NA`                  | `Mongo`
 >
 #### Custom Components:
-Name              | Type                | Description | Preferences/Arguments
+Name              | Type                | Description | Preferences
 ----------------- | ------------------- | ----------- | -----
 `Brackets-Editor` | Program Integration | Connects Brackets web editor | `[-Silent]`
 `Combinatrix`     | PS Enhancement      | Adds probability Math Functions | `NA` 
