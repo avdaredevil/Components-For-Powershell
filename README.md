@@ -4,7 +4,7 @@
 ## Usage
 >
 ```PowerShell
-./Configure-Component.ps1 [[-Component] <Object>] [[-Preference] <Object>] [-List] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-Debug]
+./Configure-Component.ps1 [[-Component] <Object>] [[-Preference] <Object>] [-List] [-Silent] [-ThrowErrors] [-Remove] [-Debug]
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
 - Use `sal cc Configure-Component`, to make it even easier!
@@ -22,6 +22,7 @@
 
 ## Examples
 > Refer **[Here](docs/examples.md)** for examples
+> Refer **[Here](docs/scr.md)** for screenshots
 
 ## In Built Components
 > 
@@ -48,6 +49,17 @@ Name              | Type                | Description | Preferences
 `IP-Address`      | PS Enhancement      | Creates a *New background Thread* that injects your IP address to your shell | `[-Refresh]`
 `Mysql`           | PS Enhancement      | Connects to mySQL and adds helper functions | `NA`
 `node-extensions` | Language Extension  | Configure node related extensions like [*Node_Webkit*] | `[-Silent]`
+
+## Parameters
+Parameter         | Definition
+----------------- | ----------
+`-Component <c [Array/String]>`  | Attach all `c` components to PShell
+`-Preference <p [Value/Object]>` | Pass preference `p[c] || p` to every `c` 
+`-List`           | List all Components
+`-Silent`         | Show only failures
+`-ThrowErrors`    | Instead of `Write-AP <err_msg>` use `throw <exception>` instead
+`-Remove <c>`     | Remove all components `c` that have a teardown behavior defined
+`-Debug`          | Enable Debugging messages
 
 ## Set Up PowerShell [If you've never run a script in PowerShell]
 > - Open PowerShell with Admin Access
