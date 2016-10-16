@@ -51,6 +51,7 @@ Name              | Type                | Description | Preferences
 `node-extensions` | Language Extension  | Configure node related extensions like [*Node_Webkit*] | `[-Silent]`
 
 ## Parameters
+>
 Parameter         | Definition
 ----------------- | ----------
 `-Component <c [Array/String]>`  | Attach all `c` components to PShell
