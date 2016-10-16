@@ -8,6 +8,7 @@
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
 - Use `sal cc Configure-Component`, to make it even easier!
+  - Then you can configure components like `cc java` or `cc python,ruby @{python=3}`
 - *__Note__: If you've never run PowerShell Scripts before refer to __Setup PowerShell Section__ Below*
 
 ## Features
@@ -27,20 +28,20 @@
 #### In Script:
 Name        | Type       | Preferences/Arguments | Alias
 ----------- | ---------- | --------------------- | ------
-`Bower`     | Tech Stack | `NA`                  | `NA`
+`Bower`     | Tech Stack | `[-NoPrepend]`        | `NA`
 `Java`      | Language   | `NA`                  | `NA`
 `Go`        | Language   | `NA`                  | `NA`
-`Python`    | Language   | `NA`                  | `py`
+`Python`    | Language   | `[-Version=2 <string>]`| `py`
 `Racket`    | Language   | `NA`                  | `DrRacket`
 `Git`       | Language   | `NA`                  | `NA`
-`PHP`       | Language   | `NA`                  | `NA`
+`PHP`       | Language   | `[-Version=5.4 <5.4,5.6>]`| `NA`
 `C`         | Language   | `NA`                  | `NA`
-`R`         | Language   | `NA`                  | `NA`
-`Ruby`      | Language   | `NA`                  | `rb`
+`R`         | Language   | `[-Bit=32 <32,64>]`   | `NA`
+`Ruby`      | Language   | `[-Version=2 <string>]`| `rb`
 `MongoDB`   | Tech Stack | `NA`                  | `Mongo`
-
+>
 #### Custom Components:
-Name              | Type                | Description | Preferences/Arguments
+Name              | Type                | Description | Preferences
 ----------------- | ------------------- | ----------- | -----
 `Brackets-Editor` | Program Integration | Connects Brackets web editor | `[-Silent]`
 `Combinatrix`     | PS Enhancement      | Adds probability Math Functions | `NA` 
