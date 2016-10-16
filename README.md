@@ -55,3 +55,6 @@ Name              | Type                | Description | Preferences
 - This allows scripts to be run in PowerShell
 - cd to the *Folder* where you downloaded/cloned [Configure-Component.ps1](Configure-Component.ps1)
 - `./Configure-Component.ps1`*`<arguments>`*
+
+---
+By: [Apoorv Verma](https://github.com/avdaredevil)

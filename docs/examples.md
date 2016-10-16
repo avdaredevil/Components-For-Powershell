@@ -34,4 +34,5 @@ PS> cc c,r,py 3               # ERRANEOUS, because "3" will be passed as a globa
 [+] Configured Python[3.5] for AP-PShell Management Console!
 ```
 
-
+---
+By: [Apoorv Verma](https://github.com/avdaredevil)
