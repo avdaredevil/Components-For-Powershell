@@ -21,8 +21,8 @@
 - Custom Components added
 
 ## Examples
-> Refer **[Here](docs/examples.md)** for examples
-> Refer **[Here](docs/scr.md)** for screenshots
+> - Refer **[Here](docs/examples.md)** for examples
+- Refer **[Here](docs/scr.md)** for screenshots
 
 ## In Built Components
 > 
