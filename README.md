@@ -28,16 +28,16 @@
 #### In Script:
 Name        | Type       | Preferences/Arguments | Alias
 ----------- | ---------- | --------------------- | ------
-`Bower`     | Tech Stack | `NA`                  | `NA`
+`Bower`     | Tech Stack | `[-NoPrepend]`        | `NA`
 `Java`      | Language   | `NA`                  | `NA`
 `Go`        | Language   | `NA`                  | `NA`
-`Python`    | Language   | `NA`                  | `py`
+`Python`    | Language   | `[-Version=2 <string>]`| `py`
 `Racket`    | Language   | `NA`                  | `DrRacket`
 `Git`       | Language   | `NA`                  | `NA`
-`PHP`       | Language   | `NA`                  | `NA`
+`PHP`       | Language   | `[-Version=5.4 <5.4,5.6>]`| `NA`
 `C`         | Language   | `NA`                  | `NA`
-`R`         | Language   | `NA`                  | `NA`
-`Ruby`      | Language   | `NA`                  | `rb`
+`R`         | Language   | `[-Bit=32 <32,64>]`   | `NA`
+`Ruby`      | Language   | `[-Version=2 <string>]`| `rb`
 `MongoDB`   | Tech Stack | `NA`                  | `Mongo`
 >
 #### Custom Components:
