@@ -61,6 +61,7 @@ Parameter         | Definition
 `-ThrowErrors`    | Instead of `Write-AP <err_msg>` use `throw <exception>` instead
 `-Remove <c>`     | Remove all components `c` that have a teardown behavior defined
 `-Debug`          | Enable Debugging messages
+`-RawOutput`      | Skip Write-AP and return PlainText instead [*Useful when used within other scripts*]
 
 ## Set Up PowerShell [If you've never run a script in PowerShell]
 > - Open PowerShell with Admin Access
