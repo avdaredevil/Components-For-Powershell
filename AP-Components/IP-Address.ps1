@@ -13,3 +13,5 @@ start -NoNewWindow powershell ('
         sleep '+$Refresh+'
     }
 ')
+
+Write-AP-Wrapper "+Attached IP-Address Thread to AP-PShell"
