@@ -46,7 +46,7 @@ Name              | Type                | Description | Preferences
 ----------------- | ------------------- | ----------- | -----
 `Brackets-Editor` | Program Integration | Connects Brackets web editor | `[-Silent]`
 `Combinatrix`     | PS Enhancement      | Adds probability Math Functions | `NA` 
-`IP-Address`      | PS Enhancement      | Creates a *New background Thread* that injects your IP address to your shell | `[-Refresh]`
+`IP-Address`      | PS Enhancement      | Creates a *New background Thread* that injects your IP address to your shell | `[-Refresh] <int>`
 `Mysql`           | PS Enhancement      | Connects to mySQL and adds helper functions | `NA`
 `node-extensions` | Language Extension  | Configure node related extensions like [*Node_Webkit*] | `[-Silent]`
 
