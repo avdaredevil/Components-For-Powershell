@@ -4,7 +4,8 @@
 ## Usage
 >
 ```PowerShell
-./Configure-Component.ps1 [[-Component] <Object>] [[-Preference] <Object>] [-List] [-Silent] [-ThrowErrors] [-Remove] [-Debug] [-RawOutput]
+Configure-Component.ps1 [-Component] <Object> [[-Preference] <Object>] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-RawOutput] [<CommonParameters>]
+Configure-Component.ps1 [-List] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-RawOutput] [-PassThru] [<CommonParameters>]
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
 - Use `sal cc Configure-Component`, to make it even easier!
@@ -52,16 +53,17 @@ Name              | Type                | Description | Preferences
 
 ## Parameters
 >
-Parameter         | Definition
------------------ | ----------
-`-Component <c [Array/String]>`  | Attach all `c` components to PShell
-`-Preference <p [Value/Object]>` | Pass preference `p[c] || p` to every `c` 
-`-List`           | List all Components
-`-Silent`         | Show only failures
-`-ThrowErrors`    | Instead of `Write-AP <err_msg>` use `throw <exception>` instead
-`-Remove <c>`     | Remove all components `c` that have a teardown behavior defined
-`-Debug`          | Enable Debugging messages
-`-RawOutput`      | Skip Write-AP and return PlainText instead [*Useful when used within other scripts*]
+Parameter         | Definition | Parameter Set
+----------------- | ---------- | -------------
+`-Component <c [Array/String]>`  | Attach all `c` components to PShell | `Install`
+`-Preference <p [Value/Object]>` | Pass preference `p[c] || p` to every `c` | `Install`
+`-List`           | List all Components | `List`
+`-PassThru`       | Pass the components in a object [*Programmatic API*] | `List`
+`-Silent`         | Show only failures | `Common`
+`-ThrowErrors`    | Instead of `Write-AP <err_msg>` use `throw <exception>` instead | `Common`
+`-Remove <c>`     | Remove all components `c` that have a teardown behavior defined | `Common`
+`-Debug`          | Enable Debugging messages | `Common`
+`-RawOutput`      | Skip Write-AP and return PlainText instead [*Useful when used within other scripts*] | `Common`
 
 ## Set Up PowerShell [If you've never run a script in PowerShell]
 > - Open PowerShell with Admin Access
