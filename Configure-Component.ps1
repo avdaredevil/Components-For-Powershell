@@ -46,7 +46,8 @@ if ($Update) {
     AP-Require "internet" {Write-AP "!Internet connection is required to update Configure-Component"}
     $REMOTE_HEAD = "https://raw.githubusercontent.com/avdaredevil/Components-For-Powershell/master/Configure-Component.ps1"
     Write-AP "*Checking for Updates for Configure-Component..."
-    $API_DATA = irm $REMOTE_HEAD
+    $API_DATA = irm $REMOTE_HEAD -ea SilentlyContinue
+    if (!$API_DATA) {Write-AP "n>![Configure-Components::CRITICAL] Could not access REPO [Check: $REMOTE_HEAD]";exit}
     $GetVer = {$a = ($args -match "Apoorv" -split "\|+")[1];return [double](JS-OR ("$a".trim() -replace "[^\d\.]") 0)}
     $myVer = $GetVer.invoke([IO.File]::ReadAllLines($PSCommandPath))[0]
     $remote = $GetVer.invoke($API_DATA.split("`n"))[0]
