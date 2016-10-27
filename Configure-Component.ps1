@@ -198,7 +198,8 @@ $Components = @{
     MongoDB = {
         $PyD = @((item C:\Mongo*,C:\AP-Langs\MongoDB*,C:\Program*File*\Mongo*).FullName)[-1]
         if (!$PyD) {Throw "MongoDB Does not Exist on System!";exit}
-        pushd $PyD;$PyD = split-path @(ls -r mongod.exe)[0];popd
+        pushd $PyD;$t = @(ls -r mongod.exe)[0];if (!$t) {$t="/"};$PyD = split-path $t -ea SilentlyContinue;popd
+        if (!$PyD) {throw "MongoDB has a folder, but no installation??";exit}
         A2Path "$PyD"
         if (!$Silent) {Write-AP-Wrapper "+Configured MongoDB[$((mongod -version)[0].split(" ")[-1])] for AP-PShell Management Console!"}
         rv PYD}
