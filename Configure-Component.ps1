@@ -56,7 +56,7 @@ if ($Update) {
     if ($Remote -le $myVer) {Write-AP ">*No updates required";exit}
     Write-AP "x>+Update found [","nx#v$myVer","nx+ ~ ","nx!v$Remote","n+]"
     $API_DATA | out-file -en ascii $PSCommandPath
-    Write-AP "x>+Command updated to ","nx!v$Remote","n+, re-run this command to get new version!"
+    Write-AP "x>+Command updated to ","nx!v$Remote","n+, re-run this command to use the new version!"
     exit
 }
 $Script:AliasDB = @{
