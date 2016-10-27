@@ -5,7 +5,7 @@
 >
 ```PowerShell
 Configure-Component.ps1 [-Component] <Object> [[-Preference] <Object>] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-RawOutput] [<CommonParameters>]
-Configure-Component.ps1 [-List] [-Silent]
+Configure-Component.ps1 [-List] [-PassThru]
 Configure-Component.ps1 [-Update]
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
