@@ -5,7 +5,8 @@
 >
 ```PowerShell
 Configure-Component.ps1 [-Component] <Object> [[-Preference] <Object>] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-RawOutput] [<CommonParameters>]
-Configure-Component.ps1 [-List] [-Silent] [-ThrowErrors] [-InRecurse] [-Remove] [-RawOutput] [-PassThru] [<CommonParameters>]
+Configure-Component.ps1 [-List] [-Silent]
+Configure-Component.ps1 [-Update]
 ```
 - Will configure any component (Technology Stack, Programming Language, Utility in one line!)
 - Use `sal cc Configure-Component`, to make it even easier!
