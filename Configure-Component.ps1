@@ -1,6 +1,6 @@
 <#
 |==============================================================================>|
-   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.1
+   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.1
 |==============================================================================>|
       $) Polyfill Inspired Logic for Connecting Components
       $) Teardown mechanism added
@@ -50,7 +50,7 @@ if ($Update) {
     Write-AP "*Checking for Updates for Configure-Component..."
     $API_DATA = irm $REMOTE_HEAD -ea SilentlyContinue
     if (!$API_DATA) {Write-AP "n>![Configure-Components::CRITICAL] Could not access REPO [Check: $REMOTE_HEAD]";exit}
-    $GetVer = {$a = ($args -match "Apoorv" -split "\|+")[1];return [double](JS-OR ("$a".trim() -replace "[^\d\.]") 0)}
+    $GetVer = {$a = ($args -match "Apoorv" -split "\|+")[1];try {return [version](JS-OR ("$a".trim() -replace "[^\d\.]") "0.0.0")}catch{return [version]"0.0.0"}}
     $myVer = $GetVer.invoke([IO.File]::ReadAllLines($PSCommandPath))[0]
     $remote = $GetVer.invoke($API_DATA.split("`n"))[0]
     if ($Remote -le $myVer) {Write-AP ">*No updates required";exit}
