@@ -7,6 +7,8 @@
       $) Auto Path Switching
       $) Component shared and dynamic args ability
       $) Alias based component resolution
+      $) Self Updating functionality
+      $) Robust binary detections
       $) Custom Components added
 |==============================================================================>|
 #>
