@@ -196,11 +196,11 @@ $Components = @{
         if (!$Silent) {Write-AP-Wrapper "+Configured Java [$($JavaD.substring(3)) $(if($x86){'32'}else{'64'})-bit] for AP-PShell Management Console!",$SubMsg}
         rv JavaD}
     MongoDB = {
-        $PyD = @((item C:\Mongo*,C:\AP-Langs\MongoDB*).FullName)[-1]
+        $PyD = @((item C:\Mongo*,C:\AP-Langs\MongoDB*,C:\Program*File*\Mongo*).FullName)[-1]
         if (!$PyD) {Throw "MongoDB Does not Exist on System!";exit}
-        A2Path "$PyD\bin"
-        if ($a = (Split-Path -leaf $PyD).substring(7)) {$a="[$a]"}
-        if (!$Silent) {Write-AP-Wrapper "+Configured MongoDB$a for AP-PShell Management Console!"}
+        pushd $PyD;$PyD = split-path @(ls -r mongod.exe)[0];popd
+        A2Path "$PyD"
+        if (!$Silent) {Write-AP-Wrapper "+Configured MongoDB[$((mongod -version)[0].split(" ")[-1])] for AP-PShell Management Console!"}
         rv PYD}
     PHP = {param([ValidateSet("5.4","5.6")]$Version="5.6")
         $PyD = Resolve-Path "C:\AP-Langs\PHP-$Version.*" -ea SilentlyContinue
