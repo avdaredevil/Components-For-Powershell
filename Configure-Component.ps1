@@ -1,6 +1,6 @@
 <#
 |==============================================================================>|
-   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.1
+   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.2
 |==============================================================================>|
       $) Polyfill Inspired Logic for Connecting Components
       $) Teardown mechanism added
@@ -12,7 +12,8 @@
       $) Custom Components added
 |==============================================================================>|
 #>
-param([Parameter(ParameterSetName='Normal',Position=0,Mandatory=$True,ValueFromPipeline=$True)]$Component="All-Langs",[Parameter(ParameterSetName='Normal',Position=1)]$Preference,[Parameter(ParameterSetName='ListMode')][Switch]$List,[Switch]$Silent,[Switch]$ThrowErrors,[Switch]$InRecurse,[Alias("Teardown")][Switch]$Remove,[Switch]$RawOutput,[Parameter(ParameterSetName='UpdateMode')][Switch]$Update,[Parameter(ParameterSetName='ListMode')][Switch]$PassThru)
+[CmdletBinding(DefaultParameterSetName="Normal")]
+param([Parameter(ParameterSetName='Normal',Position=0,ValueFromPipeline=$True)]$Component="All-Langs",[Parameter(ParameterSetName='Normal',Position=1)]$Preference,[Parameter(ParameterSetName='ListMode')][Switch]$List,[Switch]$Silent,[Switch]$ThrowErrors,[Switch]$InRecurse,[Alias("Teardown")][Switch]$Remove,[Switch]$RawOutput,[Parameter(ParameterSetName='UpdateMode')][Switch]$Update,[Parameter(ParameterSetName='ListMode')][Switch]$PassThru)
 # =======================================START=OF=COMPILER==========================================================|
 #    The Following Code was added by AP-Compiler Version [1.2] To Make this program independent of AP-Core Engine
 #    GitHub: https://github.com/avdaredevil/AP-Compiler
@@ -43,21 +44,30 @@ function Script:Write-AP-Wrapper ([Switch]$Force) {
     if (!$RawOutput -or $Force) {Write-AP @args;return}
     @($args | ? {$_ -notmatch "^\-no"})[0]
 }
-if ($Update) {
-    if ($Host.Version.Major -lt 3) {Write-Host -f yellow "[!] PowerShell versions under 3 not supported. Please update to windows 10";exit}
-    AP-Require "internet" {Write-AP "!Internet connection is required to update Configure-Component"}
+function Check-ScriptVersions {
+    if (!(AP-Require "internet" -PassThru)) {return}
     $REMOTE_HEAD = "https://raw.githubusercontent.com/avdaredevil/Components-For-Powershell/master/Configure-Component.ps1"
-    Write-AP "*Checking for Updates for Configure-Component..."
     $API_DATA = irm $REMOTE_HEAD -ea SilentlyContinue
     if (!$API_DATA) {Write-AP "n>![Configure-Components::CRITICAL] Could not access REPO [Check: $REMOTE_HEAD]";exit}
     $GetVer = {$a = ($args -match "Apoorv" -split "\|+")[1];try {return [version](JS-OR ("$a".trim() -replace "[^\d\.]") "0.0.0")}catch{return [version]"0.0.0"}}
-    $myVer = $GetVer.invoke([IO.File]::ReadAllLines($PSCommandPath))[0]
-    $remote = $GetVer.invoke($API_DATA.split("`n"))[0]
-    if ($Remote -le $myVer) {Write-AP ">*No updates required";exit}
-    Write-AP "x>+Update found [","nx#v$myVer","nx+ ~ ","nx!v$Remote","n+]"
+    $o = @{}
+    $o.local = $GetVer.invoke([IO.File]::ReadAllLines($PSCommandPath))[0]
+    $o.remote = $GetVer.invoke($API_DATA.split("`n"))[0]
+    return [PSCustomObject]$o
+}
+if ($Update) {
+    if ($Host.Version.Major -lt 3) {Write-Host -f yellow "[!] PowerShell versions under 3 not supported. Please update to windows 10";exit}
+    Write-AP "*Checking for Updates for Configure-Component..."
+    $Vers = Check-ScriptVersions
+    if (!$Vers) {Write-AP "!Internet connection is required to update Configure-Component";exit}
+    if ($Vers.Remote -le $Vers.local) {Write-AP ">*No updates required";exit}
+    Write-AP "x>+Update found [","nx#v$($vers.local)","nx+ ~ ","nx!v$($vers.remote)","n+]"
     $API_DATA | out-file -en ascii $PSCommandPath
-    Write-AP "x>+Command updated to ","nx!v$Remote","n+, re-run this command to use the new version!"
+    Write-AP "x>+Command updated to ","nx!v$($vers.remote)","n+, re-run this command to use the new version!"
     exit
+} elseif (!$InRecurse -and (Get-Random -max 50)%3) {
+    $Vers = Check-ScriptVersions
+    if ($Vers -and $Vers.Remote -gt $Vers.local) {Write-AP "nx![","nx#Configure-Component","nx!] Update available [","nx+v$($vers.remote)","nx!], use ","nx#-update","n! to update"," "}
 }
 $Script:AliasDB = @{
     "DrRacket"="Racket"
