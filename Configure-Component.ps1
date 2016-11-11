@@ -145,9 +145,9 @@ $Components = @{
             popd
         }
         function Global:branches{git branch | % {$_.substring(2)}}
-        function Global:Git-Commits{
+        function Global:Git-Commits([Alias("Num")][int32]$MaxResults = 100){
             if (!(Test-Path ".git")) {Write-AP "!Current Directory is not a git repo...";return}
-            $a=git log -n 100 |?{"$_".trim()};$f=@()
+            $a=git log -n $MaxResults |?{"$_".trim()};$f=@()
             $idx = 0..($a.length-1) | % {if ($a[$_].substring(0,4) -eq "    "){$_}else{-1}} | ? {$_ -ne -1}
             $prev = -1;$idx | % {$i=$_
                 $tmp = $a[($prev+1)..$i];$o=@{};$id=0
@@ -163,7 +163,7 @@ $Components = @{
                 $prev = $i;[PSCustomObject]$o
             } | select commit,author,date,message,merge
         }
-        sal commits Git-Commits
+        sal commits Git-Commits -scope Global
         function Global:master{branches | ? {$_ -eq "master"} | % {git checkout $_}}
         function Global:gh-pages{branches | ? {$_ -eq "gh-pages"} | % {git checkout $_}}
         function Global:Git-NextVersion([Parameter(Mandatory=$True)]$Message) {
