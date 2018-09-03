@@ -200,7 +200,7 @@ $Components = @{
     Java = {
         $x86 = !(Test-Path "C:\Program Files\Java") -and ((Test-Path "C:\Program Files (x86)\Java") -or (Test-Path "C:\Program Files (x86)\Common Files\Oracle\Java"))
         $PF = "C:\Program Files$(if ($x86) {' (x86)'})"
-        $JavaD = @((item "$PF\Java\jre*","$PF\Common Files\Oracle\Java\javapath").FullName)[-1]
+        $JavaD = @((item "$PF\Java\jdk*","$PF\Java\jre*","$PF\Common Files\Oracle\Java\javapath").FullName)[-1]
         if (!$JavaD) {Throw "Java Does not Exist on System!";exit}
         $Version = (Split-Path -leaf $JavaD).substring(3).trim("-")
         $AndroidSDK = @((item "$Env:AppData\..\Local\Android\sdk","$PF\Android\android-sdk",C:\AP-Langs\Android*SDK -ea SilentlyContinue).FullName)[-1]
