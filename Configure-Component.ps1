@@ -198,7 +198,7 @@ $Components = @{
         $env:GOPATH = ($env:GOROOT = $PyD)+"\bin"
         rv PYD}
     Java = {
-        $x86 = (Test-Path "C:\Program Files (x86)\Java") -or (Test-Path "C:\Program Files (x86)\Common Files\Oracle\Java")
+        $x86 = !(Test-Path "C:\Program Files\Java") -and ((Test-Path "C:\Program Files (x86)\Java") -or (Test-Path "C:\Program Files (x86)\Common Files\Oracle\Java"))
         $PF = "C:\Program Files$(if ($x86) {' (x86)'})"
         $JavaD = @((item "$PF\Java\jre*","$PF\Common Files\Oracle\Java\javapath").FullName)[-1]
         if (!$JavaD) {Throw "Java Does not Exist on System!";exit}
