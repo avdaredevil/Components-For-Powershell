@@ -135,8 +135,12 @@ $Components = @{
         rv PYD}
     Git = {
         $PyD = "$Home\AppData\Local\GitHub\shell.ps1"
-        if (!(test-path $Pyd)) {Throw "Git Does not Exist on System!";exit}
-        & $PyD
+        $PyD2 = @((item C:\Program*\Git,C:\AP-Langs\Git).FullName)[-1]
+        if (test-path $Pyd) {& $PyD}
+        elseif ($PyD2) {
+            "/usr/bin","mingw64/bin" | % {"$PyD2/$_"} | ? {Test-Path $_} | % {A2Path $_}
+        }
+        else {Throw "Git Does not Exist on System!";exit}
         function Global:Git-Rebase ([Switch]$Silent) {
             pushd (cmd /c where msys-1.0.dll)
             $addr = "0x$(3..7 | Get-Random)0000000"
