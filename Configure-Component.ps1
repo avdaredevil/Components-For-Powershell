@@ -209,7 +209,7 @@ $Components = @{
             $env:ANDROID_HOME = $AndroidSDK
             "","platform-" | % {A2Path "$AndroidSDK\${_}tools"}
         }
-        if ($Version -match "\D") {
+        if ($Version -match "[^\d\.]") {
             # Common Files install
             $Version = ""
             A2Path $JavaD
