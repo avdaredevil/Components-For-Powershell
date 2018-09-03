@@ -198,20 +198,23 @@ $Components = @{
         $env:GOPATH = ($env:GOROOT = $PyD)+"\bin"
         rv PYD}
     Java = {
-        $suff = "\Java\jre*";$sdkSuff = "\Android\android-sdk"
-        $x86 = Test-Path "C:\Program Files (x86)"
-        $PF = "C:\Program Files",$(if ($x86){"C:\Program Files (x86)"})
-        $JavaPath = @((item ($PF | % {"$_$suff"}) -ea SilentlyContinue).FullName)[-1]
-        $JavaD = Split-Path -Leaf $JavaPath
+        $x86 = (Test-Path "C:\Program Files (x86)\Java") -or (Test-Path "C:\Program Files (x86)\Common Files\Oracle\Java")
+        $PF = "C:\Program Files$(if ($x86) {' (x86)'})"
+        $JavaD = @((item "$PF\Java\jre*","$PF\Common Files\Oracle\Java\javapath").FullName)[-1]
         if (!$JavaD) {Throw "Java Does not Exist on System!";exit}
-        $AndroidSDK = @((item ("$Env:AppData\..\Local\Android\sdk",($PF | % {"$_$sdkSuff"}),"C:\AP-Langs\Android*SDK" | % {$_}) -ea SilentlyContinue).FullName)[-1]
+        $Version = (Split-Path -leaf $JavaD).substring(3).trim("-")
+        $AndroidSDK = @((item "$Env:AppData\..\Local\Android\sdk","$PF\Android\android-sdk",C:\AP-Langs\Android*SDK -ea SilentlyContinue).FullName)[-1]
         if ($AndroidSDK) {
             $SubMsg = "x>*Extra Plugin [","nsx+AndroidSDK","ns*] connected."
             $env:ANDROID_HOME = $AndroidSDK
             "","platform-" | % {A2Path "$AndroidSDK\${_}tools"}
         }
-        A2Path "$JavaPath\bin"
-        if (!$Silent) {Write-AP-Wrapper "+Configured Java [$($JavaD.substring(3).Trim("-")) $(if($x86){'32'}else{'64'})-bit] for AP-PShell Management Console!",$SubMsg}
+        if ($Version -match "\D") {
+            # Common Files install
+            $Version = ""
+            A2Path $JavaD
+        } else {A2Path "$JavaD\bin"}
+        if (!$Silent) {Write-AP-Wrapper "+Configured Java [$(if($Version){"$Version "})$(if($x86){'32'}else{'64'})-bit] for AP-PShell Management Console!",$SubMsg}
         rv JavaD}
     MongoDB = {
         $PyD = @((item C:\Mongo*,C:\AP-Langs\MongoDB*,C:\Program*File*\Mongo*).FullName)[-1]
