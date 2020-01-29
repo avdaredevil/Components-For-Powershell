@@ -1,6 +1,6 @@
 <#
 |==============================================================================>|
-   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.3
+   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.4
 |==============================================================================>|
       $) Polyfill Inspired Logic for Connecting Components
       $) Teardown mechanism added
@@ -35,7 +35,7 @@ function Component-Alias($al) {JS-OR $Script:AliasDB.$al $al}
 function Component-Version($v) {if ($v) {"[$v]"}}
 function Get-CC-TearDown {
     return @{
-        removeFuncs={param($RGX);ls FUnction:|? Name -Match $RGX | Remove-Item}
+        removeFuncs={param($RGX);ls Function:|? Name -Match $RGX | Remove-Item}
     }
 }
 function Get-Prefs($Pref,$Me) {if (!$Pref) {return};if ($Pref.GetType().name -eq "Hashtable") {JS-OR $Pref.$Me $Pref."$($AliasDBRev.$Me)"} else {$Pref}}
@@ -47,12 +47,12 @@ function Script:Write-AP-Wrapper ([Switch]$Force) {
 function Check-ScriptVersions {
     if (!(AP-Require "internet" -PassThru)) {return}
     $REMOTE_HEAD = "https://raw.githubusercontent.com/avdaredevil/Components-For-Powershell/master/Configure-Component.ps1"
-    $API_DATA = irm $REMOTE_HEAD -ea SilentlyContinue
-    if (!$API_DATA) {Write-AP "n>![Configure-Components::CRITICAL] Could not access REPO [Check: $REMOTE_HEAD]";exit}
+    $Script:API_DATA = irm $REMOTE_HEAD -ea SilentlyContinue
+    if (!$Script:API_DATA) {Write-AP "n>![Configure-Components::CRITICAL] Could not access REPO [Check: $REMOTE_HEAD]";exit}
     $GetVer = {$a = ($args -match "Apoorv" -split "\|+")[1];try {return [version](JS-OR ("$a".trim() -replace "[^\d\.]") "0.0.0")}catch{return [version]"0.0.0"}}
     $o = @{}
     $o.local = $GetVer.invoke([IO.File]::ReadAllLines($PSCommandPath))[0]
-    $o.remote = $GetVer.invoke($API_DATA.split("`n"))[0]
+    $o.remote = $GetVer.invoke($Script:API_DATA.split("`n"))[0]
     return [PSCustomObject]$o
 }
 if ($Update) {
@@ -62,7 +62,7 @@ if ($Update) {
     if (!$Vers) {Write-AP "!Internet connection is required to update Configure-Component";exit}
     if ($Vers.Remote -le $Vers.local) {Write-AP ">*No updates required";exit}
     Write-AP "x>+Update found [","nx#v$($vers.local)","nx+ ~ ","nx!v$($vers.remote)","n+]"
-    $API_DATA | out-file -en ascii $PSCommandPath
+    $Script:API_DATA | out-file -en ascii $PSCommandPath
     Write-AP "x>+Command updated to ","nx!v$($vers.remote)","n+, re-run this command to use the new version!"
     exit
 } elseif (!$InRecurse -and !((Get-Random -max 50)%5)) {
@@ -148,7 +148,7 @@ $Components = @{
             })) -ea SilentlyContinue | % FullName | Select -f 1
         if (!(test-path $Pyd)) {Throw "Git Does not Exist on System!";exit}
         A2Path $PyD
-        function Global:Git-Rebase ([Switch]$Silent) {
+        function Global:Git-RebaseDll ([Switch]$Silent) {
             pushd (cmd /c where msys-1.0.dll)
             $addr = "0x$(3..7 | Get-Random)0000000"
             rebase.exe -b $addr msys-1.0.dll
@@ -156,10 +156,18 @@ $Components = @{
             popd
         }
         function Global:branches{git branch | % {$_.substring(2)}}
+        function Global:Git-Rebase([Alias("Num")][int32]$Commits){
+            if ($Commits -lt 1) {Write-AP "!Commit param has to be greater than 0";return}
+            if (!(git rev-parse --git-dir 2>$null)) {Write-AP "!Current Directory is not a git repo...";return}
+            $Commit = Git-Commits -MaxResults $Commits | select -index ($Commits-1) | % Commit
+            if (!$Commit) {Write-AP "!Could find commit HEAD~$Commits";return}
+            git rebase -i "$Commit^"
+        }
         function Global:Git-Commits([Alias("Num")][int32]$MaxResults = 100){
             if (!(git rev-parse --git-dir 2>$null)) {Write-AP "!Current Directory is not a git repo...";return}
             $a=git log -n $MaxResults |?{"$_".trim()};$f=@()
             $idx = 0..($a.length-1) | % {if ($a[$_].substring(0,4) -eq "comm"){$_}else{-1}} | ? {$_ -gt 1}
+            $idx = @($idx) + $a.length
             $prev = 0;$idx | % {$i=$_
                 $tmp = $a[$prev..($i-1)];$o=@{};$id=0
                 $o.commit = $tmp[$id++].split(" ")[1]
@@ -284,9 +292,8 @@ $Components = @{
             (Get-PSDrive | ? {$_.Provider.Name -eq "FileSystem"} | % Root | % {
                 Join-Path "$_" "AP-Langs\Anaconda*"
             })) -ea SilentlyContinue | % FullName)
-        if (!($PyD = ($PyDs -match "(Python|Anaconda)-?$Version")[0])) {
-            $PyD = JS-OR {@($PyDs -match "Anaconda")[0]} $PyDs[-1]
-        } else {Negate-Path python @($PyDs -notmatch "(Python|Conda)-?$Version")[0]}
+        $PyD = JS-OR {@($PyDs -match "Anaconda")[0]} {($PyDs -match "(Python|Anaconda)-?$Version")[0]} $PyDs[-1]
+        Negate-Path python @($PyDs | ? {$_ -ne $PyD})
         if (!$PyD) {Throw "Python Does not Exist on System!";exit}
         try {A2Path (Split-Path (Resolve-Path "~\AppData\Local\Programs\Common\Microsoft\Visual C++ for Python\*\VC\bin\*\vcbuild.exe"))} catch {Write-AP-Wrapper ">!This happened when binding VC++ for Python: [$_]"}
         $isAnaconda = $PyD -match "Anaconda"
