@@ -1,6 +1,6 @@
 <#
 |==============================================================================>|
-   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.4
+   Configure-Component by APoorv Verma [AP] on 10/23/2015 || Version: 1.0.5
 |==============================================================================>|
       $) Polyfill Inspired Logic for Connecting Components
       $) Teardown mechanism added
