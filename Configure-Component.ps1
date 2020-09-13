@@ -234,9 +234,21 @@ $Components = @{
         if (!$Silent) {Write-AP-Wrapper "+Configured PostgreSQL$(if($Version){"[$Version]"}) for AP-PShell Management Console!"}
         rv PYD}
     Java = {
-        $x86 = !(Test-Path "C:\Program Files\Java") -and ((Test-Path "C:\Program Files (x86)\Java") -or (Test-Path "C:\Program Files (x86)\Common Files\Oracle\Java"))
-        $PF = "C:\Program Files$(if ($x86) {' (x86)'})"
-        $JavaD = @((item "$PF\Java\jdk*","$PF\Java\jre*","$PF\Common Files\Oracle\Java\javapath").FullName)[0]
+        $PyD = @(item (@(
+            "C:\Program Files\Java",
+            "C:\Program Files (x86)\Java",
+            "C:\Program Files (x86)\Common Files\Oracle\Java")+
+            (Get-PSDrive | ? {$_.Provider.Name -eq "FileSystem"} | % Root | % {
+                Join-Path "$_" "AP-Langs\Java"
+                Join-Path "$_" "AP-Progs\Java"
+                Join-Path "$_" "AP-Langs\Java-*"
+                Join-Path "$_" "AP-Progs\Java-*"
+            })) -ea SilentlyContinue | % FullName)[-1]
+        if (Test-Path "$PyD\bin\java.exe") {
+            $JavaD = $PyD
+        } else {
+            $JavaD = @((item "$PyD\jdk*","$PyD\jre*").FullName)[0]
+        }
         if (!$JavaD) {Throw "Java Does not Exist on System!";exit}
         $Version = (Split-Path -leaf $JavaD).substring(3).trim("-")
         $AndroidSDK = @((item "$Env:AppData\..\Local\Android\sdk","$PF\Android\android-sdk",C:\AP-Langs\Android*SDK -ea SilentlyContinue).FullName)[-1]
@@ -380,14 +392,14 @@ $Components = @{
             & $edit (Join-Path (SSH-BaseFolder) "config")
         }
         function Global:SSH-KeyFile {
-            $Config = Join-Path (SSH-BaseFolder) "id_rsa.pub"
+            return Join-Path (SSH-BaseFolder) "id_rsa.pub"
         }
         function Global:SSH-LinkUser($HostName, $User) {
             $Key = cat (SSH-KeyFile) -ea SilentlyContinue
             if (!$Key) {Write-AP "!Run ssh-keygen first (press enter on all things)";return}
             if ($User) {$HostName = "$User@$HostName"}
             ssh.exe $HostName "mkdir -p ~/.ssh && echo '$Key' >$(if(!$ReplaceKeys){'>'}) ~/.ssh/authorized_keys && chmod go-w ~"
-            Write-AP "+Linked your computer to SSH Host [$Host]"
+            Write-AP "+Linked your computer to SSH Host [$HostName]"
         }
         # Corrects Windows to Linux pathswap
         function Global:scp {
