@@ -55,7 +55,7 @@ Name              | Type                | Description | Preferences
 Parameter         | Definition | Parameter Set
 ----------------- | ---------- | -------------
 `-Component <c [Array/String]>`  | Attach all `c` components to PShell | `Install`
-`-Preference <p [Value/Object]>` | Pass preference `p[c] || p` to every `c` | `Install`
+`-Preference <p [Value/Object]>` | Pass preference <code>p[c] &#124;&#124; p</code> to every `c` | `Install`
 `-List`           | List all Components | `List`
 `-PassThru`       | Pass the components in a object [*Programmatic API*] | `List`
 `-Silent`         | Show only failures | `Common`
