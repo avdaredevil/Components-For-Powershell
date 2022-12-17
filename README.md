@@ -38,6 +38,7 @@ Name        | Type       | Preferences/Arguments | Alias
 `C`         | Language   | `NA`                  | `NA`
 `R`         | Language   | `[-Bit=32 <32,64>]`   | `NA`
 `Ruby`      | Language   | `[-Version=2 <string>]`| `rb`
+`ssh`       | Tech Stack | `NA`                  | `NA`
 `MongoDB`   | Tech Stack | `NA`                  | `Mongo`
 
 #### Custom Components:
