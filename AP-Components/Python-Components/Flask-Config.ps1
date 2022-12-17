@@ -20,7 +20,7 @@ param(
     [ValidateSet("Basic","Intermediate","Advanced")][String]$Form = "Basic"
 )
 # =======================================START=OF=COMPILER==========================================================|
-#    The Following Code was added by AP-Compiler Version [1.3] To Make this program independent of AP-Core Engine
+#    The Following Code was added by AP-Compiler Version [1.4] To Make this program independent of AP-Core Engine
 #    GitHub: https://github.com/avdaredevil/AP-Compiler
 # ==================================================================================================================|
 $Script:PSHell=$(if($PSHell){$PSHell}elseif($PSScriptRoot){$PSScriptRoot}else{"."});
