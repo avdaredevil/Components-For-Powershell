@@ -1,7 +1,12 @@
 <#@=|AP-Component by AP for IP-Address display flushed every $n = 5 seconds|=@#>
 param($Refresh)
 if (![int32]::TryParse($Refresh,[ref]$null)) {$Refresh = 5}
-start -NoNewWindow powershell ('
+function Global:cc_ip-address_teardown.private {
+    if (!$cc_TearDown_Resources) {Write-AP-Wrapper "!This function can only be executed from within the Configure-Component context";return $False}
+    kill ${Global:cc_component_data.ip_addr_thread};return $true
+}
+if (${Global:cc_component_data.ip_addr_thread}) {kill ${Global:cc_component_data.ip_addr_thread}}
+${Global:cc_component_data.ip_addr_thread} = start -PassThru -NoNewWindow powershell ('-noprofile 
     $b=$Host.UI.RawUI;$c=[Console]
     function c($x) {New-Object Management.Automation.Host.Coordinates $x} 
     function plc($t){
