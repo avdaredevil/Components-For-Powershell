@@ -176,13 +176,18 @@ $Components = @{
         rv PYD}
     Git = {
         if (!(AP-Require "dep:git" -PassThru)) {
-            $PyD = item ((,"C:\Git\bin*")+
-                (Get-PSDrive | ? {$_.Provider.Name -eq "FileSystem"} | % Root | % {
-                    Join-Path "$_" "AP-Langs\Git\bin"
-                })) -ea SilentlyContinue | % FullName | Select -f 1
-            if (!(test-path $Pyd)) {Throw "Git Does not Exist on System!";exit}
-            A2Path $PyD
-            rv PYD
+            $PyD = "$Home\AppData\Local\GitHub\shell.ps1"
+            if (test-path $Pyd) {& $PyD}
+            else {
+              $PyD = item ((,"C:\Git\bin*")+
+                  (Get-PSDrive | ? {$_.Provider.Name -eq "FileSystem"} | % Root | % {
+                      Join-Path "$_" "AP-Langs\Git\bin"
+                      Join-Path "$_" "Program*\Git\usr\bin"
+                      Join-Path "$_" "Program*\Git\mingw64\bin"
+                  } | % {$_})) -ea SilentlyContinue | % FullName | Select -f 1
+              if (!(test-path $Pyd)) {Throw "Git Does not Exist on System!";exit}
+              A2Path $PyD
+            } else {Throw "Git Does not Exist on System!";exit}
         }
         function Global:Git-RebaseDll ([Switch]$Silent) {
             pushd (cmd /c where msys-1.0.dll)
