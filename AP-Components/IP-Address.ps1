@@ -1,22 +1,37 @@
 <#@=|AP-Component by AP for IP-Address display flushed every $n = 5 seconds|=@#>
+# ap-compile: Get-IP
 param($Refresh)
+# =======================================START=OF=COMPILER==========================================================|
+#    The Following Code was added by AP-Compiler 1.6 (APC: 1.2) To Make this program independent of AP-Core Engine
+#    GitHub: https://github.com/avdaredevil/AP-Compiler
+# ==================================================================================================================|
+$Script:PSHell=$(if($PSHell){$PSHell}elseif($PSScriptRoot){$PSScriptRoot}else{"."});
+$Script:AP_Console = @{version=[version]'1.2'; isShim = $true}
+function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
+# This syntax is to prevent AV's from misclassifying this as anything but innocuous
+& (Get-Alias iex) (B64 "ZnVuY3Rpb24gR2V0LUlQIHsNCiAgICA8Iw0KICAgIC5TWU5PUFNJUw0KICAgIFJldHJpZXZlcyB0aGUgcHVibGljIG9yIHByaXZhdGUgSVAgYWRkcmVzcyBvZiB0aGUgY3VycmVudCBtYWNoaW5lLg0KICAgIA0KICAgIC5QQVJBTUVURVIgUHVibGljDQogICAgSWYgc2V0LCByZXRyaWV2ZXMgdGhlIHB1YmxpYyBJUCBhZGRyZXNzIGluc3RlYWQgb2YgcHJpdmF0ZSBJUCBhZGRyZXNzZXMuDQogICAgDQogICAgLlBBUkFNRVRFUiBSYXcNCiAgICBJZiBzZXQsIHJldHVybnMgb25seSBhIHNpbmdsZSBJUHY0IGFkZHJlc3Mgd2l0aG91dCBhbnkgZm9ybWF0dGluZy4NCiAgICBQcmlvcml0aXplcyBsb2NhbCBzdWJuZXQgSVBzIG92ZXIgbG9vcGJhY2sgYWRkcmVzc2VzLg0KICAgICM+DQogICAgW0NtZGxldEJpbmRpbmcoKV0NCiAgICBwYXJhbSAoDQogICAgICAgIFtTd2l0Y2hdJFB1YmxpYyA9ICRGYWxzZSwNCiAgICAgICAgW1N3aXRjaF0kUmF3ID0gJEZhbHNlDQogICAgKQ0KDQogICAgJEdldFByaXZhdGUgPSB7DQogICAgICAgIGlmICgkSXNXaW5kb3dzKSB7DQogICAgICAgICAgICAkYWRhcHRlcnMgPSBHZXQtV21pT2JqZWN0IFdpbjMyX05ldHdvcmtBZGFwdGVyQ29uZmlndXJhdGlvbiAtTmFtZXNwYWNlICJyb290XENJTVYyIiB8ID8geyAkXy5JUEVuYWJsZWQgLWVxICJUcnVlIiB9DQogICAgICAgICAgICBpZiAoJFJhdykgew0KICAgICAgICAgICAgICAgICRpcEFkZHJlc3MgPSAkYWRhcHRlcnMgfCANCiAgICAgICAgICAgICAgICAgICAgU2VsZWN0LU9iamVjdCAtRXhwYW5kUHJvcGVydHkgSVBBZGRyZXNzIHwgDQogICAgICAgICAgICAgICAgICAgID8geyAkXyAtbWF0Y2ggJ15cZCtcLlxkK1wuXGQrXC5cZCskJyAtYW5kICRfIC1uZSAnMTI3LjAuMC4xJyB9IHwgDQogICAgICAgICAgICAgICAgICAgIFNlbGVjdC1PYmplY3QgLUZpcnN0IDENCiAgICAgICAgICAgICAgICByZXR1cm4gJGlwQWRkcmVzcw0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgJHJlc3VsdHMgPSBAKCkNCiAgICAgICAgICAgIGZvcmVhY2ggKCRhZGFwdGVyIGluICRhZGFwdGVycykgew0KICAgICAgICAgICAgICAgICRyZXN1bHRzICs9ICJBZGFwdGVyOiAiICsgJGFkYXB0ZXIuRGVzY3JpcHRpb24NCiAgICAgICAgICAgICAgICAkcmVzdWx0cyArPSAiICBETlMgRG9tYWluOiAiICsgJGFkYXB0ZXIuRE5TRG9tYWluDQogICAgICAgICAgICAgICAgJHJlc3VsdHMgKz0gIiAgSVB2NCBBZGRyZXNzOiAiICsgKCRhZGFwdGVyLklQQWRkcmVzcyB8ID8geyAkXyAtbWF0Y2ggJ15cZCtcLlxkK1wuXGQrXC5cZCskJyB9IHwgU2VsZWN0LU9iamVjdCAtRmlyc3QgMSkNCiAgICAgICAgICAgICAgICAkaXB2NiA9ICRhZGFwdGVyLklQQWRkcmVzcyB8ID8geyAkXyAtbWF0Y2ggJzonIH0gfCBTZWxlY3QtT2JqZWN0IC1GaXJzdCAxDQogICAgICAgICAgICAgICAgaWYgKCRpcHY2KSB7DQogICAgICAgICAgICAgICAgICAgICRyZXN1bHRzICs9ICIgIElQdjYgQWRkcmVzczogIiArICRpcHY2DQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuICRyZXN1bHRzDQogICAgICAgIH0NCiAgICAgICAgZWxzZWlmICgkSXNMaW51eCAtb3IgJElzTWFjT1MpIHsNCiAgICAgICAgICAgIGlmICgkSXNMaW51eCkgew0KICAgICAgICAgICAgICAgICRpcEluZm8gPSBJbnZva2UtRXhwcmVzc2lvbiAiaXAgYWRkciBzaG93IHwgZ3JlcCAtRSAnaW5ldHxpbmV0NiciDQogICAgICAgICAgICB9DQogICAgICAgICAgICBlbHNlaWYgKCRJc01hY09TKSB7DQogICAgICAgICAgICAgICAgJGlwSW5mbyA9IEludm9rZS1FeHByZXNzaW9uICJpZmNvbmZpZyB8IGdyZXAgLUUgJ2luZXQgfGluZXQ2ICciDQogICAgICAgICAgICB9DQogICAgICAgICAgICBpZiAoJFJhdykgew0KICAgICAgICAgICAgICAgICRpcEFkZHJlc3MgPSAoJGlwSW5mbyAtc3BsaXQgImBuIiB8IA0KICAgICAgICAgICAgICAgICAgICA/IHsgJF8gLW1hdGNoICdpbmV0ICcgLWFuZCAkXyAtbm90bWF0Y2ggJzEyNy4wLjAuMScgfSB8IA0KICAgICAgICAgICAgICAgICAgICBTZWxlY3QtT2JqZWN0IC1GaXJzdCAxKSAtcmVwbGFjZSAnLippbmV0IChbMC05Ll0rKS4qJywnJDEnDQogICAgICAgICAgICAgICAgcmV0dXJuICRpcEFkZHJlc3MNCiAgICAgICAgICAgIH0NCiAgICAgICAgICAgICRyZXN1bHRzID0gQCgpDQogICAgICAgICAgICAkaW50ZXJmYWNlcyA9ICRpcEluZm8gLXNwbGl0ICJgbiINCiAgICAgICAgICAgICRjdXJyZW50QWRhcHRlciA9ICIiDQogICAgICAgICAgICBmb3JlYWNoICgkbGluZSBpbiAkaW50ZXJmYWNlcykgew0KICAgICAgICAgICAgICAgIGlmICgkbGluZSAtbWF0Y2ggIl5cUyIpIHsNCiAgICAgICAgICAgICAgICAgICAgJGN1cnJlbnRBZGFwdGVyID0gKCRsaW5lIC1zcGxpdCAiOiIpWzBdDQogICAgICAgICAgICAgICAgICAgICRyZXN1bHRzICs9ICJBZGFwdGVyOiAkY3VycmVudEFkYXB0ZXIiDQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgICAgIGlmICgkbGluZSAtbWF0Y2ggImluZXQgIiAtYW5kICRsaW5lIC1ub3RtYXRjaCAiMTI3LjAuMC4xIikgew0KICAgICAgICAgICAgICAgICAgICAkaXB2NCA9ICgkbGluZSAtc3BsaXQgIiAiKVsxXQ0KICAgICAgICAgICAgICAgICAgICAkcmVzdWx0cyArPSAiICBJUHY0IEFkZHJlc3M6ICRpcHY0Ig0KICAgICAgICAgICAgICAgIH0NCiAgICAgICAgICAgICAgICBlbHNlaWYgKCRsaW5lIC1tYXRjaCAiaW5ldDYiIC1hbmQgJGxpbmUgLW5vdG1hdGNoICI6OjEiKSB7DQogICAgICAgICAgICAgICAgICAgICRpcHY2ID0gKCRsaW5lIC1zcGxpdCAiICIpWzFdDQogICAgICAgICAgICAgICAgICAgICRyZXN1bHRzICs9ICIgIElQdjYgQWRkcmVzczogJGlwdjYiDQogICAgICAgICAgICAgICAgfQ0KICAgICAgICAgICAgfQ0KICAgICAgICAgICAgcmV0dXJuICRyZXN1bHRzDQogICAgICAgIH0NCiAgICAgICAgZWxzZSB7DQogICAgICAgICAgICBXcml0ZS1FcnJvciAiVW5zdXBwb3J0ZWQgb3BlcmF0aW5nIHN5c3RlbSINCiAgICAgICAgICAgIHJldHVybiAkbnVsbA0KICAgICAgICB9DQogICAgfQ0KDQogICAgJEdldFB1YmxpYyA9IHsNCiAgICAgICAgdHJ5IHsNCiAgICAgICAgICAgICRwdWJsaWNJUCA9IGlybSAnaHR0cHM6Ly9hcGkuaXBpZnkub3JnP2Zvcm1hdD1qc29uJw0KICAgICAgICAgICAgaWYgKCRSYXcpIHsNCiAgICAgICAgICAgICAgICByZXR1cm4gJHB1YmxpY0lQLmlwDQogICAgICAgICAgICB9DQogICAgICAgICAgICByZXR1cm4gIlB1YmxpYyBJUHY0IEFkZHJlc3M6ICIgKyAkcHVibGljSVAuaXANCiAgICAgICAgfQ0KICAgICAgICBjYXRjaCB7DQogICAgICAgICAgICBXcml0ZS1FcnJvciAiRmFpbGVkIHRvIHJldHJpZXZlIHB1YmxpYyBJUDogJF8iDQogICAgICAgICAgICByZXR1cm4gJG51bGwNCiAgICAgICAgfQ0KICAgIH0NCg0KICAgIGlmICgkUHVibGljKSB7IHJldHVybiAmICRHZXRQdWJsaWMgfQ0KICAgIHJldHVybiAmICRHZXRQcml2YXRlDQp9CgpmdW5jdGlvbiBHZXQtUG93ZXJTaGVsbFByb2Nlc3NQYXRoIHsNCiAgICBpZiAoJFBTQ29tbWFuZFBhdGgpIHsNCiAgICAgICAgIyBJZiBydW5uaW5nIGluIGEgc2NyaXB0DQogICAgICAgIGlmICgkUFNFZGl0aW9uIC1lcSAnQ29yZScpIHsNCiAgICAgICAgICAgIEdldC1Db21tYW5kIHB3c2ggfCBTZWxlY3QtT2JqZWN0IC1FeHBhbmRQcm9wZXJ0eSBTb3VyY2UNCiAgICAgICAgfSBlbHNlIHsNCiAgICAgICAgICAgIEdldC1Db21tYW5kIHBvd2Vyc2hlbGwgfCBTZWxlY3QtT2JqZWN0IC1FeHBhbmRQcm9wZXJ0eSBTb3VyY2UNCiAgICAgICAgfQ0KICAgIH0gZWxzZWlmICgkaG9zdC5WZXJzaW9uLk1ham9yIC1nZSA2KSB7DQogICAgICAgICMgUG93ZXJTaGVsbCA2KyAoQ29yZSkNCiAgICAgICAgJFBTSG9tZSArICcvcHdzaCcgKyAoJy5leGUnLCAnJylbJElzTGludXggLW9yICRJc01hY09TXQ0KICAgIH0gZWxzZSB7DQogICAgICAgICMgV2luZG93cyBQb3dlclNoZWxsDQogICAgICAgICIkUFNIb21lXHBvd2Vyc2hlbGwuZXhlIg0KICAgIH0NCn0KCmZ1bmN0aW9uIENvbnZlcnQtVG9CYXNlNjQge3BhcmFtKFtQYXJhbWV0ZXIoVmFsdWVGcm9tUGlwZWxpbmU9JHRydWUpXVtTdHJpbmddJFRleHQsIFtWYWxpZGF0ZVNldCgiVVRGOCIsIlVuaWNvZGUiKV1bU3RyaW5nXSRFbmNvZGluZyA9ICJVVEY4IikNCg0KICAgIFtTeXN0ZW0uQ29udmVydF06OlRvQmFzZTY0U3RyaW5nKFtTeXN0ZW0uVGV4dC5FbmNvZGluZ106OiRFbmNvZGluZy5HZXRCeXRlcygkVGV4dCkpDQp9Cg==")
+# ========================================END=OF=COMPILER===========================================================|
 if (![int32]::TryParse($Refresh,[ref]$null)) {$Refresh = 5}
 function Global:cc_ip-address_teardown.private {
     if (!$cc_TearDown_Resources) {Write-AP-Wrapper "!This function can only be executed from within the Configure-Component context";return $False}
     kill ${Global:cc_component_data.ip_addr_thread};return $true
 }
 if (${Global:cc_component_data.ip_addr_thread}) {kill ${Global:cc_component_data.ip_addr_thread}}
-${Global:cc_component_data.ip_addr_thread} = start -PassThru -NoNewWindow powershell ('-noprofile 
-    $b=$Host.UI.RawUI;$c=[Console]
+$LoadIp = Convert-ToBase64 "function Get-IP {$(cat Function:/Get-IP)}"
+$EncCommand = '
+    iex ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String('''+$LoadIp+''')))
+    $b=$Host.UI.RawUI
+    $c=[Console]
     function c($x) {New-Object Management.Automation.Host.Coordinates $x} 
     function plc($t){
         $d = $b.NewBufferCellArray(@($t),''Yellow'',$c::BackgroundColor)
         $b.SetBufferContents((c ($c::WindowWidth-$t.length-1),0),$d)}
     while ($true) {
-        $IP = Get-WmiObject Win32_NetworkAdapterConfiguration -Namespace ''root\CIMV2'' | ? IPEnabled
-        if ($IP) {plc (''IP: ''+@($IP)[0].IPAddress[0])} else {plc ''Offline''}
+        $IP = Get-IP -Raw
+        if ($IP) {plc (''IP: ''+$IP)} else {plc ''Offline''}
         sleep '+$Refresh+'
-    }
-')
+    }'
+${Global:cc_component_data.ip_addr_thread} = start -PassThru -NoNewWindow (Get-PowerShellProcessPath) "-noprofile -noni -c $encCommand"
 
 Write-AP-Wrapper "+Attached IP-Address Thread to AP-PShell"
+

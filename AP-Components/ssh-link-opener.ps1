@@ -1,5 +1,15 @@
 <#@=|AP-Component by AP for SSH Link opening flushed every $n = 1 seconds|=@#>
 param($Refresh)
+# =======================================START=OF=COMPILER==========================================================|
+#    The Following Code was added by AP-Compiler 1.6 (APC: 1.2) To Make this program independent of AP-Core Engine
+#    GitHub: https://github.com/avdaredevil/AP-Compiler
+# ==================================================================================================================|
+$Script:PSHell=$(if($PSHell){$PSHell}elseif($PSScriptRoot){$PSScriptRoot}else{"."});
+$Script:AP_Console = @{version=[version]'1.2'; isShim = $true}
+function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
+# This syntax is to prevent AV's from misclassifying this as anything but innocuous
+& (Get-Alias iex) (B64 "")
+# ========================================END=OF=COMPILER===========================================================|
 if (![int32]::TryParse($Refresh,[ref]$null)) {$Refresh = 1}
 function Global:cc_ssh-link-opener_teardown.private {
     if (!$cc_TearDown_Resources) {Write-AP-Wrapper "!This function can only be executed from within the Configure-Component context";return $False}
@@ -39,3 +49,4 @@ ${Global:cc_component_data.ssh_links} = start -PassThru -NoNewWindow powershell 
 ')
 
 Write-AP-Wrapper "+Attached SSH-Link Agent Thread to AP-PShell"
+
