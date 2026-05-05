@@ -1,15 +1,17 @@
 <#@=|AP-Component by AP for Clock display flushed every $n = 1 seconds|=@#>
 param($Refresh)
-# =======================================START=OF=COMPILER==========================================================|
-#    The Following Code was added by AP-Compiler 1.6 (APC: 1.2) To Make this program independent of AP-Core Engine
+# =======================================START=OF=COMPILER================================================================|
+#    The Following Code was added by AP-Compiler 1.6 (APC: 1.3) To Make this program independent of AP-Core Engine
 #    GitHub: https://github.com/avdaredevil/AP-Compiler
-# ==================================================================================================================|
+# ========================================================================================================================|
 $Script:PSHell=$(if($PSHell){$PSHell}elseif($PSScriptRoot){$PSScriptRoot}else{"."});
-$Script:AP_Console = @{version=[version]'1.2'; isShim = $true}
-function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
-# This syntax is to prevent AV's from misclassifying this as anything but innocuous
-& (Get-Alias iex) (B64 "ZnVuY3Rpb24gR2V0LVBvd2VyU2hlbGxQcm9jZXNzUGF0aCB7DQogICAgaWYgKCRQU0NvbW1hbmRQYXRoKSB7DQogICAgICAgICMgSWYgcnVubmluZyBpbiBhIHNjcmlwdA0KICAgICAgICBpZiAoJFBTRWRpdGlvbiAtZXEgJ0NvcmUnKSB7DQogICAgICAgICAgICBHZXQtQ29tbWFuZCBwd3NoIHwgU2VsZWN0LU9iamVjdCAtRXhwYW5kUHJvcGVydHkgU291cmNlDQogICAgICAgIH0gZWxzZSB7DQogICAgICAgICAgICBHZXQtQ29tbWFuZCBwb3dlcnNoZWxsIHwgU2VsZWN0LU9iamVjdCAtRXhwYW5kUHJvcGVydHkgU291cmNlDQogICAgICAgIH0NCiAgICB9IGVsc2VpZiAoJGhvc3QuVmVyc2lvbi5NYWpvciAtZ2UgNikgew0KICAgICAgICAjIFBvd2VyU2hlbGwgNisgKENvcmUpDQogICAgICAgICRQU0hvbWUgKyAnL3B3c2gnICsgKCcuZXhlJywgJycpWyRJc0xpbnV4IC1vciAkSXNNYWNPU10NCiAgICB9IGVsc2Ugew0KICAgICAgICAjIFdpbmRvd3MgUG93ZXJTaGVsbA0KICAgICAgICAiJFBTSG9tZVxwb3dlcnNoZWxsLmV4ZSINCiAgICB9DQp9Cg==")
-# ========================================END=OF=COMPILER===========================================================|
+if($AP_CONSOLE.mode -ne 'main' -or $AP_CONSOLE.customFlags.runAsCompiled) {
+    $Script:AP_CONSOLE = [PsCustomObject]@{version=[version]'1.3'; mode = 'shim'; customFlags = @{}}
+    function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
+    # This syntax is to prevent AV's from misclassifying this as anything but innocuous
+    & (Get-Alias iex) (B64 "ZnVuY3Rpb24gR2V0LVBvd2VyU2hlbGxQcm9jZXNzUGF0aCB7DQogICAgaWYgKCRQU0NvbW1hbmRQYXRoKSB7DQogICAgICAgICMgSWYgcnVubmluZyBpbiBhIHNjcmlwdA0KICAgICAgICBpZiAoJFBTRWRpdGlvbiAtZXEgJ0NvcmUnKSB7DQogICAgICAgICAgICBHZXQtQ29tbWFuZCBwd3NoIHwgc2VsZWN0IC1FeHBhbmRQcm9wZXJ0eSBTb3VyY2UNCiAgICAgICAgfSBlbHNlIHsNCiAgICAgICAgICAgIEdldC1Db21tYW5kIHBvd2Vyc2hlbGwgfCBzZWxlY3QgLUV4cGFuZFByb3BlcnR5IFNvdXJjZQ0KICAgICAgICB9DQogICAgfSBlbHNlaWYgKCRob3N0LlZlcnNpb24uTWFqb3IgLWdlIDYpIHsNCiAgICAgICAgIyBQb3dlclNoZWxsIDYrIChDb3JlKQ0KICAgICAgICAkUFNIb21lICsgJy9wd3NoJyArICgnLmV4ZScsICcnKVskSXNMaW51eCAtb3IgJElzTWFjT1NdDQogICAgfSBlbHNlIHsNCiAgICAgICAgIyBXaW5kb3dzIFBvd2VyU2hlbGwNCiAgICAgICAgIiRQU0hvbWVccG93ZXJzaGVsbC5leGUiDQogICAgfQ0KfQo=")
+} elseif($AP_CONSOLE.warnOnCompileRun) {& $AP_CONSOLE.warnOnCompileRun}
+# ========================================END=OF=COMPILER=================================================================|
 if (![int32]::TryParse($Refresh,[ref]$null)) {$Refresh = 1}
 function Global:cc_clock_teardown.private {
     if (!$cc_TearDown_Resources) {Write-AP-Wrapper "!This function can only be executed from within the Configure-Component context";return $False}

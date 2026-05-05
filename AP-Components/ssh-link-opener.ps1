@@ -1,15 +1,17 @@
 <#@=|AP-Component by AP for SSH Link opening flushed every $n = 1 seconds|=@#>
 param($Refresh)
-# =======================================START=OF=COMPILER==========================================================|
-#    The Following Code was added by AP-Compiler 1.6 (APC: 1.2) To Make this program independent of AP-Core Engine
+# =======================================START=OF=COMPILER================================================================|
+#    The Following Code was added by AP-Compiler 1.6 (APC: 1.3) To Make this program independent of AP-Core Engine
 #    GitHub: https://github.com/avdaredevil/AP-Compiler
-# ==================================================================================================================|
+# ========================================================================================================================|
 $Script:PSHell=$(if($PSHell){$PSHell}elseif($PSScriptRoot){$PSScriptRoot}else{"."});
-$Script:AP_Console = @{version=[version]'1.2'; isShim = $true}
-function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
-# This syntax is to prevent AV's from misclassifying this as anything but innocuous
-& (Get-Alias iex) (B64 "")
-# ========================================END=OF=COMPILER===========================================================|
+if($AP_CONSOLE.mode -ne 'main' -or $AP_CONSOLE.customFlags.runAsCompiled) {
+    $Script:AP_CONSOLE = [PsCustomObject]@{version=[version]'1.3'; mode = 'shim'; customFlags = @{}}
+    function B64 {param([Parameter(ValueFromPipeline=$true)][String]$Text, [ValidateSet("UTF8","Unicode")][String]$Encoding = "UTF8")     [System.Text.Encoding]::$Encoding.GetString([System.Convert]::FromBase64String($Text))}
+    # This syntax is to prevent AV's from misclassifying this as anything but innocuous
+    & (Get-Alias iex) (B64 "")
+} elseif($AP_CONSOLE.warnOnCompileRun) {& $AP_CONSOLE.warnOnCompileRun}
+# ========================================END=OF=COMPILER=================================================================|
 if (![int32]::TryParse($Refresh,[ref]$null)) {$Refresh = 1}
 function Global:cc_ssh-link-opener_teardown.private {
     if (!$cc_TearDown_Resources) {Write-AP-Wrapper "!This function can only be executed from within the Configure-Component context";return $False}
